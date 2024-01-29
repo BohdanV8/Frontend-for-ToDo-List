@@ -1,4 +1,6 @@
 import React from "react";
+import MyInput from "./UI/MyInput/MyInput";
+import MyButton from "./UI/MyButton/MyButton";
 
 const Menu = () => {
   return (
@@ -43,6 +45,14 @@ const Menu = () => {
           <span className="word_to">to</span>
           <span className="word_do">do</span>
         </h1>
+      </div>
+      <div className="row container">
+        <div className="col-md-9 col-lg-9 col-xl-9 order-md-1">
+          <MyInput />
+        </div>
+        <div className="col-md-3 col-lg-3 col-xl-3 order-md-2">
+          <MyButton />
+        </div>
       </div>
     </nav>
   );
