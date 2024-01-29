@@ -1,0 +1,21 @@
+body{
+    background: var(--Gray-600, #1A1A1A);
+}
+
+.word_to{
+    color: var(--Blue, #4EA8DE);
+    font-family: Inter;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+}
+
+.word_do{
+    color: var(--PurpleDark, #5E60CE);
+    font-family: Inter;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+}

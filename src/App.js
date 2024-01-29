@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React from "react";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap";
+import "./styles/main.css";
+import Menu from "./components/Menu";
+import MyInput from "./components/UI/MyInput/MyInput";
+import MyButton from "./components/UI/MyButton/MyButton";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container text-center">
+      <Menu />
+      <div className="container row mt-5">
+        <div className="col-md-9 mt-5">
+          <MyInput />
+        </div>
+        <div className="col-md-3">
+          <MyButton />
+        </div>
+      </div>
     </div>
   );
 }
