@@ -19,3 +19,17 @@ body{
     font-weight: 900;
     line-height: normal;
 }
+
+.forms{
+    position: absolute;
+    top: 300px;
+}
+
+h1, p, h2, h3, label{
+    color: var(--PurpleLight, #6d6ff1);
+}
+
+form {
+    border-radius: 80px;
+    padding: 20px;
+}
