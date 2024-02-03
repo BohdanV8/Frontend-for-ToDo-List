@@ -1,5 +1,5 @@
 import React from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Authorization = () => {
   return (
@@ -45,9 +45,9 @@ const Authorization = () => {
             <div className="card-footer text-center">
               <p className="mb-0">
                 Don't have an account yet?{" "}
-                {/* <Link className="nav-link" to="/">
+                <Link className="nav-link" to="/registration">
                   Sign up
-                </Link> */}
+                </Link>
               </p>
             </div>
           </div>

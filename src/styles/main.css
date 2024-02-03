@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+
 body{
     background: var(--Gray-600, #1A1A1A);
 }
@@ -22,11 +24,12 @@ body{
 
 .forms{
     position: absolute;
-    top: 300px;
+    top: 280px;
 }
 
 h1, p, h2, h3, label{
-    color: var(--PurpleLight, #6d6ff1);
+    color: var(--Blue, #4EA8DE);
+    font-family: 'Raleway', sans-serif;
 }
 
 form {

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Registration = () => {
   return (
@@ -40,6 +41,14 @@ const Registration = () => {
                   </button>
                 </div>
               </form>
+            </div>
+            <div className="card-footer text-center">
+              <p className="mb-0">
+                Have an account allready?{" "}
+                <Link className="nav-link" to="/">
+                  Sign in
+                </Link>
+              </p>
             </div>
           </div>
         </div>
