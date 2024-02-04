@@ -8,5 +8,5 @@ export const publicRoutes = [
 ];
 export const privateRoutes = [
   { path: "/home", element: Home },
-  { path: "/room", element: Room },
+  { path: "/room", element: Room }
 ].concat(publicRoutes);

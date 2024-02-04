@@ -1,7 +1,35 @@
-import React from "react";
-import { Link } from "react-router-dom";
-
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
+import { AuthContext } from "../../context";
 const Authorization = () => {
+  const {setIsAuth} = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [error, setError] = useState();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/user/login",
+        formData
+      );
+      setIsAuth(response.data.userId);
+      navigate("/home");
+    } catch (error) {
+      console.error("Error during signin:", error.message);
+      setError("Помилка авторизації");
+    }
+  };
+  const [formData, setFormData] = useState({
+    username: "",
+    password: ""
+  });
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   return (
     <div className="container forms">
       <div className="row justify-content-center">
@@ -11,7 +39,7 @@ const Authorization = () => {
               <h3 className="text-center">Sign in</h3>
             </div>
             <div className="card-body bg-black">
-              <form className="dark">
+              <form className="dark" onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="username" className="form-label">
                     Username
@@ -20,9 +48,14 @@ const Authorization = () => {
                     type="text"
                     className="form-control"
                     id="username"
+                    name="username"
+                    placeholder="Enter username"
+                    value={formData.username}
+                    onChange={handleInputChange}
                     required
                   />
                 </div>
+
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label">
                     Password
@@ -32,6 +65,9 @@ const Authorization = () => {
                     className="form-control"
                     id="password"
                     placeholder="********"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
                     required
                   />
                 </div>

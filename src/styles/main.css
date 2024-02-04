@@ -22,9 +22,9 @@ body{
     line-height: normal;
 }
 
-.forms{
-    position: absolute;
-    top: 280px;
+.content{
+    position: relative;
+    top: 200px;
 }
 
 h1, p, h2, h3, label{
@@ -35,4 +35,18 @@ h1, p, h2, h3, label{
 form {
     border-radius: 80px;
     padding: 20px;
+}
+
+button {
+    background-color: #4EA8DE;
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+input {
+    border-radius: 10px;
+    background-color: #333333;
+    color: white;
+    border-color: #262626;
 }

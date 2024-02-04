@@ -16,10 +16,12 @@ function App() {
   }, []);
   return (
     <div className="container text-center">
+      <Menu />
       <AuthContext.Provider value={{ isAuth, setIsAuth }}>
         <BrowserRouter>
-          <Menu />
-          <AppRouter />
+          <div className="content">
+            <AppRouter />
+          </div>
         </BrowserRouter>
       </AuthContext.Provider>
     </div>
