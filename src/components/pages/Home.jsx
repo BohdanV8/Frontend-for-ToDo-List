@@ -35,22 +35,22 @@ const Home = () => {
     }
   };
   return (
-    <div>
-      <div className="row">
+    <div className="container text-center">
+      <div className="row justify-content-center">
         <input
           type="text"
-          className="col-md-7 mx-2"
+          className="col-md-7"
           id="roomTitle"
           name="roomTitle"
           placeholder="Enter room title"
           value={roomTitle}
           onChange={handleInputChange}
         />
-        <button className="col-md-3" onClick={addRoom}>
+        <button className="col-md-3 mx-2" onClick={addRoom}>
           Add room
         </button>
       </div>
-      <div className="container">
+      <div className="mt-5">
         <RoomItem />
       </div>
     </div>
