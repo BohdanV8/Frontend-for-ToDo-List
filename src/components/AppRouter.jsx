@@ -1,10 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import { publicRoutes } from "../router/routes";
 import { privateRoutes } from "../router/routes";
 import { Route, Routes } from "react-router-dom";
-import { AuthContext } from "../context";
 const AppRouter = () => {
-  const { isAuth } = useContext(AuthContext);
+  const isAuth = localStorage.getItem("isAuth");
   return isAuth ? (
     <Routes>
       {privateRoutes.map((el) => (

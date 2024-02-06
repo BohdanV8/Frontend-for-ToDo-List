@@ -7,4 +7,10 @@
     margin-top: 15px;
     justify-content: space-between;
     align-items: center;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
 }
+
+.roomItem:hover {
+    transform: scale(1.05);
+  }

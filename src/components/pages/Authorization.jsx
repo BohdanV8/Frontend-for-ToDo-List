@@ -4,7 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 import { AuthContext } from "../../context";
 const Authorization = () => {
-  const {setIsAuth} = useContext(AuthContext);
+  const { setIsAuth } = useContext(AuthContext);
   const navigate = useNavigate();
   const [error, setError] = useState();
   const handleSubmit = async (e) => {
@@ -14,6 +14,7 @@ const Authorization = () => {
         "http://localhost:8080/user/login",
         formData
       );
+      localStorage.setItem("isAuth", response.data.userId);
       setIsAuth(response.data.userId);
       navigate("/home");
     } catch (error) {
@@ -23,7 +24,7 @@ const Authorization = () => {
   };
   const [formData, setFormData] = useState({
     username: "",
-    password: ""
+    password: "",
   });
 
   const handleInputChange = (e) => {

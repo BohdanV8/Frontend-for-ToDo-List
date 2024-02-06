@@ -1,20 +1,25 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useContext } from "react";
-import { AuthContext } from "../../context";
-import RoomItem from "../RoomItem/RoomItem";
+import Loader from "../UI/Loader/Loader";
+import RoomList from "../RoomList/RoomList";
 const Home = () => {
-  const { isAuth } = useContext(AuthContext);
-  const rooms = useMemo(async () => {
+  const isAuth = localStorage.getItem("isAuth");
+  const [isLoading, setIsLoading] = useState(true);
+  const [rooms, setRooms] = useState([]);
+  const fetchRooms = async () => {
     try {
       const response = await axios.get(
         `http://localhost:8080/rooms/getUsersRooms/${isAuth}`
       );
-      console.log(response.data);
+      setRooms(response.data.dataCr.concat(response.data.dataAdd));
+      setIsLoading(false);
     } catch (error) {
-      console.error("Error during getting rooms:", error.message);
+      console.error("Помилка під час отримання кімнат:", error.message);
     }
-  }, []);
+  };
+  useEffect(() => {
+    fetchRooms();
+  }, [isAuth]);
   const [roomTitle, setRoomTitle] = useState("");
   const handleInputChange = (e) => {
     setRoomTitle(e.target.value);
@@ -22,13 +27,11 @@ const Home = () => {
   const addRoom = async () => {
     if (roomTitle) {
       try {
-        const response = await axios.post(
-          "http://localhost:8080/rooms/createRoom",
-          {
-            roomName: roomTitle,
-            creatorId: isAuth,
-          }
-        );
+        await axios.post("http://localhost:8080/rooms/createRoom", {
+          roomName: roomTitle,
+          creatorId: isAuth,
+        });
+        fetchRooms();
       } catch (error) {
         console.error("Error during adding room:", error.message);
       }
@@ -50,9 +53,15 @@ const Home = () => {
           Add room
         </button>
       </div>
-      <div className="mt-5">
-        <RoomItem />
-      </div>
+      {isLoading ? (
+        <div className="mt-5">
+          <Loader />
+        </div>
+      ) : (
+        <div className="mt-5">
+          <RoomList rooms={rooms} />
+        </div>
+      )}
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { AuthContext } from "../../context";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 const Registration = () => {
-  const {setIsAuth} = useContext(AuthContext);
+  const { setIsAuth } = useContext(AuthContext);
   const navigate = useNavigate();
   const [error, setError] = useState();
   const handleSubmit = async (e) => {
@@ -17,6 +17,7 @@ const Registration = () => {
         "http://localhost:8080/user/reg",
         formData
       );
+      localStorage.setItem("isAuth", response.data.userId);
       setIsAuth(response.data.userId);
       navigate("/home");
     } catch (error) {

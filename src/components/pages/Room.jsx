@@ -1,6 +1,6 @@
 import React from "react";
 
-const Room = () => {
+const Room = ({ room }) => {
   return (
     <div>
       <h1 className="text-center">Room</h1>
