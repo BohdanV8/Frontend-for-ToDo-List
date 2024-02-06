@@ -9,8 +9,11 @@ const RoomItem = ({ room }) => {
       <div
         className={styles.roomItem}
         onClick={() => {
-          if (room.creator_id === isAuth) {
-            navigate("/room");
+          if (room.creator_id == isAuth) {
+            navigate("/userRoom");
+          }
+          else {
+            navigate("/anotherRoom");
           }
         }}
       >

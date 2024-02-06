@@ -2,9 +2,13 @@ import React from "react";
 import RoomItem from "../RoomItem/RoomItem";
 const RoomList = ({ rooms }) => {
   return (
-    <div>
+    <div className="row">
       {rooms.map((room) => {
-        return <RoomItem key={room.room_id} room={room} />;
+        return (
+          <div className="col-md-6 col-lg-4 mt-2" key={room.room_id}>
+            <RoomItem room={room} />
+          </div>
+        );
       })}
     </div>
   );
