@@ -1,0 +1,16 @@
+.taskItem {
+    display: flex;
+    padding: 15px;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 10px;
+    background-color: #808080;
+    margin-top: 15px;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.taskItem:hover {
+    transform: scale(1.05);
+  }

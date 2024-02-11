@@ -9,10 +9,10 @@ const RoomItem = ({ room }) => {
       <div
         className={styles.roomItem}
         onClick={() => {
+          localStorage.setItem("roomId", room.room_id);
           if (room.creator_id == isAuth) {
             navigate("/userRoom");
-          }
-          else {
+          } else {
             navigate("/anotherRoom");
           }
         }}
