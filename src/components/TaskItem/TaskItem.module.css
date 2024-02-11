@@ -1,16 +1,52 @@
-.taskItem {
-    display: flex;
-    padding: 15px;
-    border: 2px solid rgb(0, 0, 0);
-    border-radius: 10px;
-    background-color: #808080;
-    margin-top: 15px;
-    justify-content: space-between;
-    align-items: center;
-    transition: transform 0.3s ease-in-out;
-    cursor: pointer;
-}
-
-.taskItem:hover {
-    transform: scale(1.05);
+.container {
+    width: 100%;
   }
+  
+  .taskItem {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .title {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .deadline {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 5px;
+  }
+  
+  .status {
+    margin-top: 10px;
+  }
+  
+  .status label {
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  
+  .status select {
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  .status button {
+    font-size: 16px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .status button:hover {
+    background-color: #0056b3;
+  }
+  

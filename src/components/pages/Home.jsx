@@ -5,7 +5,7 @@ import RoomList from "../RoomList/RoomList";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import TaskList from "../TaskList/TaskList";
 const Home = () => {
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState("");
   const [taskTitle, setTaskTitle] = useState("");
   const isAuth = localStorage.getItem("isAuth");
   const [isRoomsLoading, setIsRoomsLoading] = useState(true);
@@ -28,6 +28,7 @@ const Home = () => {
         title: taskTitle,
         day: date,
       });
+      fetchTasks();
     } catch (error) {
       console.error("Error during creating task for user:", error.message);
     }
@@ -75,7 +76,7 @@ const Home = () => {
           roomName: roomTitle,
           creatorId: isAuth,
         });
-        fetchTasks();
+        fetchRooms();
       } catch (error) {
         console.error("Error during adding room:", error.message);
       }
@@ -166,9 +167,8 @@ const Home = () => {
           <Loader />
         </div>
       ) : (
-        <div className="mt-3">
-          {/* <TaskList tasks={tasks} /> */}
-          {console.log(tasks)}
+        <div className="mt-3" style={{ minHeight: "120px" }}>
+          <TaskList tasks={tasks.data} />
         </div>
       )}
     </div>
