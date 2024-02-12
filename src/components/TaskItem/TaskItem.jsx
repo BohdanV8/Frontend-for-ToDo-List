@@ -3,7 +3,7 @@ import styles from "./TaskItem.module.css";
 import axios from "axios";
 const TaskItem = ({ task }) => {
   const [selectedStatus, setSelectedStatus] = useState(task.status);
-
+  const [statusOfTask, setStatusOfTask] = useState(task.status);
   const handleStatusChange = (e) => {
     setSelectedStatus(e.target.value);
   };
@@ -16,6 +16,7 @@ const TaskItem = ({ task }) => {
           new_status: selectedStatus
         }
       );
+      setStatusOfTask(selectedStatus);
     } catch (error) {
       console.error("Помилка під час оновлення статусу завдання:", error.message);
     }
@@ -28,8 +29,8 @@ const TaskItem = ({ task }) => {
         <p className={styles.deadline}>
           Deadline: {new Date(task.day).toLocaleDateString()}
         </p>
-        {task.status && (
-          <p className={styles.deadline}>Status: {task.status}</p>
+        {statusOfTask && (
+          <p className={styles.deadline}>Status: {statusOfTask}</p>
         )}
         <div className={styles.status}>
           <label htmlFor="status">Status:</label>
