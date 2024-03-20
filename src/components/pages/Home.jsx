@@ -4,6 +4,7 @@ import Loader from "../UI/Loader/Loader";
 import RoomList from "../RoomList/RoomList";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import TaskList from "../TaskList/TaskList";
+
 const Home = () => {
   const [date, setDate] = useState("");
   const [taskTitle, setTaskTitle] = useState("");
@@ -13,15 +14,19 @@ const Home = () => {
   const [rooms, setRooms] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
+
   const handleDateChange = (e) => {
     setDate(e.target.value);
   };
+
   const handleSelectedDateChange = (e) => {
     setSelectedDate(e.target.value);
   };
+
   const handleInputChangeForTaskTitle = (e) => {
     setTaskTitle(e.target.value);
   };
+
   const handleAddTask = async () => {
     try {
       await axios.post(`http://localhost:8080/tasks/createTask/${isAuth}`, {
@@ -33,9 +38,10 @@ const Home = () => {
       console.error("Error during creating task for user:", error.message);
     }
   };
+
   const fetchTasks = async () => {
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         `http://localhost:8080/tasks/allTasks/${isAuth}`,
         {
           selectedDate,
@@ -44,12 +50,10 @@ const Home = () => {
       setTasks(response.data);
       setIsTasksLoading(false);
     } catch (error) {
-      console.error(
-        "Помилка під час отримання завдань користувача:",
-        error.message
-      );
+      console.error("Error fetching user tasks:", error.message);
     }
   };
+
   const fetchRooms = async () => {
     try {
       const response = await axios.get(
@@ -58,17 +62,24 @@ const Home = () => {
       setRooms(response.data.dataCr.concat(response.data.dataAdd));
       setIsRoomsLoading(false);
     } catch (error) {
-      console.error("Помилка під час отримання кімнат:", error.message);
+      console.error("Error fetching rooms:", error.message);
     }
   };
+
   useEffect(() => {
     fetchRooms();
-    fetchTasks();
   }, [isAuth]);
+
+  useEffect(() => {
+    fetchTasks();
+  }, [selectedDate]);
+
   const [roomTitle, setRoomTitle] = useState("");
+
   const handleInputChange = (e) => {
     setRoomTitle(e.target.value);
   };
+
   const addRoom = async () => {
     if (roomTitle) {
       try {
@@ -78,99 +89,103 @@ const Home = () => {
         });
         fetchRooms();
       } catch (error) {
-        console.error("Error during adding room:", error.message);
+        console.error("Error adding room:", error.message);
       }
     }
   };
+
   return (
-    <div className="container text-center">
-      <div className="row justify-content-center">
-        <input
-          type="text"
-          className="col-md-7"
-          id="roomTitle"
-          name="roomTitle"
-          placeholder="Enter room title"
-          value={roomTitle}
-          onChange={handleInputChange}
-        />
-        <button className="col-md-3 mx-2" onClick={addRoom}>
-          Add room
-        </button>
-      </div>
+    <div className="container">
+      <Row className="mt-5">
+        <Col md={6}>
+          <div className="mb-4">
+            <h2>Add Room</h2>
+            <div className="d-flex">
+              <input
+                type="text"
+                className="form-control me-2"
+                placeholder="Enter room title"
+                value={roomTitle}
+                onChange={handleInputChange}
+              />
+              <Button className="btn btn-primary" onClick={addRoom}>
+                Add
+              </Button>
+            </div>
+          </div>
+          <div>
+            <h2>Rooms</h2>
+            {isRoomsLoading ? (
+              <div className="mt-3">
+                <Loader />
+              </div>
+            ) : (
+              <div className="mt-3">
+                <RoomList rooms={rooms} />
+              </div>
+            )}
+          </div>
+        </Col>
+        <Col md={6}>
+          <div className="mb-4">
+            <h2>Add Task</h2>
+            <div className="d-flex">
+              <input
+                type="text"
+                className="form-control me-2"
+                placeholder="Enter task title"
+                value={taskTitle}
+                onChange={handleInputChangeForTaskTitle}
+              />
+              <Form.Control
+                type="date"
+                className="me-2"
+                value={date}
+                onChange={handleDateChange}
+              />
+              <Button className="btn btn-primary" onClick={handleAddTask}>
+                Add
+              </Button>
+            </div>
+          </div>
+          <div>
+            <h2>Tasks</h2>
+            <div className="mt-3">
+              <Row className="mb-3">
+                <Col md={8}>
+                  <Form.Control
+                    type="date"
+                    value={selectedDate}
+                    onChange={handleSelectedDateChange}
+                  />
+                </Col>
+                <Col md={4}>
+                  <Button
+                    className="btn btn-secondary w-100"
+                    onClick={() => {
+                      setSelectedDate("");
+                      setIsTasksLoading(true);
+                      fetchTasks();
+                    }}
+                  >
+                    Show all tasks
+                  </Button>
+                </Col>
+              </Row>
 
-      <Row className="justify-content-center mt-3">
-        <Col md={4}>
-          <Form.Group>
-            <Form.Control
-              type="text"
-              id="taskTitle"
-              name="taskTitle"
-              placeholder="Enter task title"
-              value={taskTitle}
-              onChange={handleInputChangeForTaskTitle}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={4}>
-          <Form.Group>
-            <Form.Control
-              type="date"
-              id="taskDate"
-              name="taskDate"
-              value={date}
-              onChange={handleDateChange}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={4}>
-          <button onClick={handleAddTask} className="w-100">
-            Add task
-          </button>
+              {isTasksLoading ? (
+                <div className="mt-3">
+                  <Loader />
+                </div>
+              ) : (
+                <div className="mt-3">
+                  <TaskList tasks={tasks.data} />
+                </div>
+              )}
+            </div>
+          </div>
         </Col>
       </Row>
-
-      <h1 className="mt-5">Rooms</h1>
-      {isRoomsLoading ? (
-        <div className="mt-5">
-          <Loader />
-        </div>
-      ) : (
-        <div className="mt-3">
-          <RoomList rooms={rooms} />
-        </div>
-      )}
-
-      <h1 className="mt-5">Tasks</h1>
-
-      <Row className="mt-3">
-        <Col md={4}>
-          <Form.Group>
-            <Form.Control
-              type="date"
-              id="selectedDate"
-              name="selectedDate"
-              value={selectedDate}
-              onChange={handleSelectedDateChange}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={4}>
-          <Button onClick={fetchTasks} className="w-100">
-            Search
-          </Button>
-        </Col>
-      </Row>
-
-      {isTasksLoading ? (
-        <div className="mt-5">
-          <Loader />
-        </div>
-      ) : (
-        <div className="mt-3" style={{ minHeight: "120px" }}>
-          <TaskList tasks={tasks.data} />
-        </div>
-      )}
     </div>
   );
 };

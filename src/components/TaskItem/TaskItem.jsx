@@ -8,17 +8,20 @@ const TaskItem = ({ task }) => {
     setSelectedStatus(e.target.value);
   };
 
-  const handleUpdateStatus = async() => {
+  const handleUpdateStatus = async () => {
     try {
       const response = await axios.put(
         `http://localhost:8080/tasks/updateStatus/${task.task_id}`,
         {
-          new_status: selectedStatus
+          new_status: selectedStatus,
         }
       );
       setStatusOfTask(selectedStatus);
     } catch (error) {
-      console.error("Помилка під час оновлення статусу завдання:", error.message);
+      console.error(
+        "Помилка під час оновлення статусу завдання:",
+        error.message
+      );
     }
   };
 
@@ -43,7 +46,7 @@ const TaskItem = ({ task }) => {
             <option value="In Progress">In Progress</option>
             <option value="Completed">Completed</option>
           </select>
-          <button onClick={handleUpdateStatus} className="mx-2">
+          <button onClick={handleUpdateStatus} className="mx-2 mt-2">
             Update Status
           </button>
         </div>

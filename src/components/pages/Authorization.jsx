@@ -25,6 +25,7 @@ const Authorization = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    email: "",
   });
 
   const handleInputChange = (e) => {
@@ -54,6 +55,19 @@ const Authorization = () => {
                     value={formData.username}
                     onChange={handleInputChange}
                     required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="exampleInputEmail1">Email address</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                   />
                 </div>
 
