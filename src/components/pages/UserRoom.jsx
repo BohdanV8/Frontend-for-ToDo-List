@@ -3,13 +3,15 @@ import axios from "axios";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Loader from "../UI/Loader/Loader";
 import TaskList from "../TaskList/TaskList";
+import UserList from "../UserList/UserList";
 const UserRoom = () => {
   const [date, setDate] = useState(null);
   const [taskTitle, setTaskTitle] = useState("");
   const [username, setUsername] = useState("");
   const roomId = localStorage.getItem("roomId");
   const userId = localStorage.getItem("isAuth");
-  const [tasks, setTasks] = useState();
+  const [tasks, setTasks] = useState([]);
+  const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleDateChange = (e) => {
@@ -28,8 +30,23 @@ const UserRoom = () => {
     }
   };
 
+  const fetchUsersInRoom = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/rooms/getUsersInRoom/${roomId}`
+      );
+      setUsers(response.data);
+    } catch (error) {
+      console.error(
+        "Помилка під час отримання користувачів в кімнаті:",
+        error.message
+      );
+    }
+  };
+
   useEffect(() => {
     fetchTasks();
+    fetchUsersInRoom();
   }, []);
   const handleAddTask = async () => {
     try {
@@ -52,6 +69,7 @@ const UserRoom = () => {
         username: username,
         roomId: roomId,
       });
+      fetchUsersInRoom();
     } catch (error) {
       console.error("Error during adding user to room:", error.message);
     }
@@ -124,6 +142,17 @@ const UserRoom = () => {
           <TaskList tasks={tasks} />
         </div>
       )}
+
+      <Row className="justify-content-center mt-5">
+        <Col md={8}>
+          <h3>Users in room:</h3>
+          {users.length > 0 ? (
+            <UserList users={users} setUsers={setUsers} />
+          ) : (
+            <p>No users in room.</p>
+          )}
+        </Col>
+      </Row>
     </Container>
   );
 };

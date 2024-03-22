@@ -7,17 +7,18 @@
     border: 1px solid #ddd;
     padding: 10px;
     margin-bottom: 20px;
+    border-radius: 10px;
   }
   
   .title {
     font-size: 18px;
-    color: #333;
+    color: #ffffff;
     margin-bottom: 5px;
   }
   
   .deadline {
     font-size: 14px;
-    color: #888;
+    color: #ffffff;
     margin-bottom: 5px;
   }
   
@@ -28,6 +29,7 @@
   .status label {
     font-size: 16px;
     margin-right: 10px;
+    color: #ffffff;
   }
   
   .status select {
@@ -50,3 +52,14 @@
     background-color: #0056b3;
   }
   
+  .todo {
+    background-color: #ac0303; 
+  }
+  
+  .inProgress {
+    background-color: #bd9308; 
+  }
+  
+  .completed {
+    background-color: #09aa2e; 
+  }

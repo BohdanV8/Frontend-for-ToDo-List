@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import styles from "./TaskItem.module.css";
 import axios from "axios";
+
 const TaskItem = ({ task }) => {
   const [selectedStatus, setSelectedStatus] = useState(task.status);
   const [statusOfTask, setStatusOfTask] = useState(task.status);
+
   const handleStatusChange = (e) => {
     setSelectedStatus(e.target.value);
   };
@@ -18,16 +20,28 @@ const TaskItem = ({ task }) => {
       );
       setStatusOfTask(selectedStatus);
     } catch (error) {
-      console.error(
-        "Помилка під час оновлення статусу завдання:",
-        error.message
-      );
+      console.error("Error updating task status:", error.message);
     }
   };
 
+  let statusColorClass = "";
+  switch (statusOfTask) {
+    case "To Do":
+      statusColorClass = styles.todo;
+      break;
+    case "In Progress":
+      statusColorClass = styles.inProgress;
+      break;
+    case "Completed":
+      statusColorClass = styles.completed;
+      break;
+    default:
+      break;
+  }
+
   return (
     <div className={styles.container}>
-      <div className={styles.taskItem}>
+      <div className={`${styles.taskItem} ${statusColorClass}`}>
         <h4 className={styles.title}>{task.title}</h4>
         <p className={styles.deadline}>
           Deadline: {new Date(task.day).toLocaleDateString()}

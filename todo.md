@@ -1,9 +1,9 @@
 UI
 Rooms on the left side - DONE
 Tasks on the right side - DONE
-Show list of users in room
-Delete user in room
+Show list of users in room - DONE
+Delete user in room - DONE
 Sort tasks by date
 Search
-Colors for diferent tasks
+Colors for diferent tasks - DONE
 Auth by email
