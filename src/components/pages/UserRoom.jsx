@@ -12,6 +12,7 @@ const UserRoom = () => {
   const userId = localStorage.getItem("isAuth");
   const [tasks, setTasks] = useState([]);
   const [users, setUsers] = useState([]);
+  const [usersNotInRoom, setUsersNotInRoom] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleDateChange = (e) => {
@@ -44,10 +45,30 @@ const UserRoom = () => {
     }
   };
 
+  const fetchUsersNotInRoom = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/user/getUsers`);
+      const allUsers = response.data.users;
+      const filteredUsers = allUsers.filter((user) => {
+        return !users.some((userInRoom) => userInRoom.id === user.id);
+      });
+      const newFilteredUsers = filteredUsers.filter((user) => {
+        return user.id != userId;
+      });
+      setUsersNotInRoom(newFilteredUsers);
+      console.log(newFilteredUsers);
+    } catch (error) {
+      console.error("Error fetching users:", error.message);
+    }
+  };
+
   useEffect(() => {
     fetchTasks();
     fetchUsersInRoom();
   }, []);
+  useEffect(() => {
+    fetchUsersNotInRoom();
+  }, [users]);
   const handleAddTask = async () => {
     try {
       await axios.post(
@@ -116,14 +137,19 @@ const UserRoom = () => {
       <Row className="justify-content-center mt-3">
         <Col md={4}>
           <Form.Group>
-            <Form.Control
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Enter username"
+            <Form.Select
+              id="selectedUser"
+              name="selectedUser"
               value={username}
               onChange={handleInputChangeForUsername}
-            />
+            >
+              <option value="">Select a user</option>
+              {usersNotInRoom.map((user) => (
+                <option key={user.id} value={user.username}>
+                  {user.username}
+                </option>
+              ))}
+            </Form.Select>
           </Form.Group>
         </Col>
         <Col md={4}>

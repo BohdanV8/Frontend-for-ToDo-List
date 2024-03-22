@@ -7,3 +7,4 @@ Sort tasks by date
 Search
 Colors for diferent tasks - DONE
 Auth by email
+Show list of users that not in room - DONE
