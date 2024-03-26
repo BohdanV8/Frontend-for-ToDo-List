@@ -36,6 +36,7 @@ const TaskItem = ({ task }) => {
       statusColorClass = styles.completed;
       break;
     default:
+      statusColorClass = styles.todo;
       break;
   }
 

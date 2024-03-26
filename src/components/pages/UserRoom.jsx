@@ -79,6 +79,7 @@ const UserRoom = () => {
           day: date,
         }
       );
+      setTaskTitle("");
       fetchTasks();
     } catch (error) {
       console.error("Error during creating task in room:", error.message);
@@ -103,80 +104,90 @@ const UserRoom = () => {
   };
   return (
     <Container className="text-center">
-      <Row className="justify-content-center">
-        <Col md={4}>
-          <Form.Group>
-            <Form.Control
-              type="text"
-              id="taskTitle"
-              name="taskTitle"
-              placeholder="Enter task title"
-              value={taskTitle}
-              onChange={handleInputChangeForTaskTitle}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={4}>
-          <Form.Group>
-            <Form.Control
-              type="date"
-              id="taskDate"
-              name="taskDate"
-              value={date}
-              onChange={handleDateChange}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={4}>
-          <Button onClick={handleAddTask} className="w-100">
-            Add task
-          </Button>
-        </Col>
-      </Row>
+      <Row>
+        <Col md={5}>
+          <Row className="justify-content-center">
+            <Col md={8}>
+              <Form.Group>
+                <Form.Select
+                  id="selectedUser"
+                  name="selectedUser"
+                  value={username}
+                  onChange={handleInputChangeForUsername}
+                >
+                  <option value="">Select a user</option>
+                  {usersNotInRoom.map((user) => (
+                    <option key={user.id} value={user.username}>
+                      {user.username}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col md={4}>
+              <Button onClick={handleAddUser} className="w-100">
+                Add user
+              </Button>
+            </Col>
+          </Row>
 
-      <Row className="justify-content-center mt-3">
-        <Col md={4}>
-          <Form.Group>
-            <Form.Select
-              id="selectedUser"
-              name="selectedUser"
-              value={username}
-              onChange={handleInputChangeForUsername}
-            >
-              <option value="">Select a user</option>
-              {usersNotInRoom.map((user) => (
-                <option key={user.id} value={user.username}>
-                  {user.username}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
+          <Row className="justify-content-center mt-5">
+            <Col>
+              <h3>Users in room:</h3>
+              {users.length > 0 ? (
+                <UserList users={users} setUsers={setUsers} />
+              ) : (
+                <p>No users in room.</p>
+              )}
+            </Col>
+          </Row>
         </Col>
-        <Col md={4}>
-          <Button onClick={handleAddUser} className="w-100">
-            Add user
-          </Button>
-        </Col>
-      </Row>
 
-      {isLoading ? (
-        <div className="mt-5">
-          <Loader />
-        </div>
-      ) : (
-        <div className="mt-3">
-          <TaskList tasks={tasks} />
-        </div>
-      )}
+        <Col md={7}>
+          <Row className="justify-content-center">
+            <Col md={4}>
+              <Form.Group>
+                <Form.Control
+                  type="text"
+                  id="taskTitle"
+                  name="taskTitle"
+                  placeholder="Enter task title"
+                  value={taskTitle}
+                  onChange={handleInputChangeForTaskTitle}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={4}>
+              <Form.Group>
+                <Form.Control
+                  type="date"
+                  id="taskDate"
+                  name="taskDate"
+                  value={date}
+                  onChange={handleDateChange}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={4}>
+              <Button onClick={handleAddTask} className="w-100">
+                Add task
+              </Button>
+            </Col>
+          </Row>
 
-      <Row className="justify-content-center mt-5">
-        <Col md={8}>
-          <h3>Users in room:</h3>
-          {users.length > 0 ? (
-            <UserList users={users} setUsers={setUsers} />
-          ) : (
-            <p>No users in room.</p>
-          )}
+          <Row className="mt-3">
+            <Col>
+              {isLoading ? (
+                <div className="mt-5">
+                  <Loader />
+                </div>
+              ) : (
+                <div className="mt-3">
+                  <TaskList tasks={tasks} />
+                </div>
+              )}
+            </Col>
+          </Row>
         </Col>
       </Row>
     </Container>

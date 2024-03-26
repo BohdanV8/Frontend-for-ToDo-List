@@ -1,4 +1,3 @@
-import AnotherRoom from "../components/pages/AnotherRoom";
 import Authorization from "../components/pages/Authorization";
 import Home from "../components/pages/Home";
 import Registration from "../components/pages/Registration";
@@ -9,6 +8,5 @@ export const publicRoutes = [
 ];
 export const privateRoutes = [
   { path: "/home", element: Home },
-  { path: "/anotherRoom", element: AnotherRoom },
-  { path: "/userRoom", element: UserRoom }
+  { path: "/userRoom", element: UserRoom },
 ].concat(publicRoutes);

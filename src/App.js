@@ -16,9 +16,9 @@ function App() {
   }, []);
   return (
     <div className="container text-center">
-      <Menu />
       <AuthContext.Provider value={{ isAuth, setIsAuth }}>
         <BrowserRouter>
+          <Menu />
           <div className="content">
             <AppRouter />
           </div>
