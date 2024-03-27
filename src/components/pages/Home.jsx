@@ -14,7 +14,15 @@ const Home = () => {
   const [rooms, setRooms] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const handleStartDateChange = (e) => {
+    setStartDate(e.target.value);
+  };
 
+  const handleEndDateChange = (e) => {
+    setEndDate(e.target.value);
+  };
   const handleDateChange = (e) => {
     setDate(e.target.value);
   };
@@ -66,6 +74,8 @@ const Home = () => {
     }
   };
 
+  const fetchTasksByDate = async () => {};
+
   useEffect(() => {
     fetchRooms();
   }, [isAuth]);
@@ -73,6 +83,12 @@ const Home = () => {
   useEffect(() => {
     fetchTasks();
   }, [selectedDate]);
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      fetchTasksByDate();
+    }
+  }, [startDate, endDate]);
 
   const [roomTitle, setRoomTitle] = useState("");
 
@@ -164,12 +180,30 @@ const Home = () => {
                     className="btn btn-secondary w-100"
                     onClick={() => {
                       setSelectedDate("");
+                      setStartDate("");
+                      setEndDate("");
                       setIsTasksLoading(true);
                       fetchTasks();
                     }}
                   >
                     Show all tasks
                   </Button>
+                </Col>
+              </Row>
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Control
+                    type="date"
+                    value={startDate}
+                    onChange={handleStartDateChange}
+                  />
+                </Col>
+                <Col md={6}>
+                  <Form.Control
+                    type="date"
+                    value={endDate}
+                    onChange={handleEndDateChange}
+                  />
                 </Col>
               </Row>
 
