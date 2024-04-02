@@ -57,7 +57,7 @@ const Authorization = () => {
                     required
                   />
                 </div>
-                <div className="form-group">
+                {/* <div className="form-group">
                   <label htmlFor="exampleInputEmail1">Email address</label>
                   <input
                     type="email"
@@ -69,7 +69,7 @@ const Authorization = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                   />
-                </div>
+                </div> */}
 
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label">

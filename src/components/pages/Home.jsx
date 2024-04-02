@@ -16,6 +16,10 @@ const Home = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const handleStatusChange = (e) => {
+    setSelectedStatus(e.target.value);
+  };
   const handleStartDateChange = (e) => {
     setStartDate(e.target.value);
   };
@@ -48,6 +52,7 @@ const Home = () => {
   };
 
   const fetchTasks = async () => {
+    setIsTasksLoading(true);
     try {
       const response = await axios.post(
         `http://localhost:8080/tasks/allTasks/${isAuth}`,
@@ -74,7 +79,18 @@ const Home = () => {
     }
   };
 
-  const fetchTasksByDate = async () => {};
+  const fetchTasksByDate = async () => {
+    setIsTasksLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/tasks/searchByDate/${isAuth}?fromDate=${startDate}&toDate=${endDate}`
+      );
+      setTasks(response);
+      setIsTasksLoading(false);
+    } catch (error) {
+      console.error("Error fetching user tasks:", error.message);
+    }
+  };
 
   useEffect(() => {
     fetchRooms();
@@ -107,6 +123,19 @@ const Home = () => {
       } catch (error) {
         console.error("Error adding room:", error.message);
       }
+    }
+  };
+
+  const filterByStatus = async () => {
+    setIsTasksLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/tasks/filterByStatus/${isAuth}?status=${selectedStatus}`
+      );
+      setTasks(response);
+      setIsTasksLoading(false);
+    } catch (error) {
+      console.error("Error fetching user tasks:", error.message);
     }
   };
 
@@ -206,7 +235,30 @@ const Home = () => {
                   />
                 </Col>
               </Row>
-
+              <Row>
+                <Col md={6}>
+                  <select
+                    id="status"
+                    value={selectedStatus}
+                    onChange={handleStatusChange}
+                    className="form-select w-100"
+                  >
+                    <option value="To Do">To Do</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                </Col>
+                <Col md={6}>
+                  <Button
+                    className="w-100"
+                    onClick={() => {
+                      filterByStatus();
+                    }}
+                  >
+                    Filter by status
+                  </Button>
+                </Col>
+              </Row>
               {isTasksLoading ? (
                 <div className="mt-3">
                   <Loader />

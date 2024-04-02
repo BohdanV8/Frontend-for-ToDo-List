@@ -4,6 +4,7 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Loader from "../UI/Loader/Loader";
 import TaskList from "../TaskList/TaskList";
 import UserList from "../UserList/UserList";
+import { useNavigate } from "react-router-dom";
 const UserRoom = () => {
   const [date, setDate] = useState(null);
   const [taskTitle, setTaskTitle] = useState("");
@@ -14,11 +15,24 @@ const UserRoom = () => {
   const [users, setUsers] = useState([]);
   const [usersNotInRoom, setUsersNotInRoom] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [isThisRoomCreatedByUser, setIsThisRoomCreatedByUser] = useState(false);
+  const navigate = useNavigate();
   const handleDateChange = (e) => {
     setDate(e.target.value);
   };
 
+  const isThisUsersRoom = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/rooms/getRoomById/${roomId}`
+      );
+      if (response.data.creator_id == userId) {
+        setIsThisRoomCreatedByUser(true);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
   const fetchTasks = async () => {
     try {
       const response = await axios.get(
@@ -56,7 +70,6 @@ const UserRoom = () => {
         return user.id != userId;
       });
       setUsersNotInRoom(newFilteredUsers);
-      console.log(newFilteredUsers);
     } catch (error) {
       console.error("Error fetching users:", error.message);
     }
@@ -65,6 +78,7 @@ const UserRoom = () => {
   useEffect(() => {
     fetchTasks();
     fetchUsersInRoom();
+    isThisUsersRoom();
   }, []);
   useEffect(() => {
     fetchUsersNotInRoom();
@@ -87,13 +101,21 @@ const UserRoom = () => {
   };
   const handleAddUser = async () => {
     try {
-      await axios.post("http://localhost:8080/rooms/addUser", {
+      const response = await axios.post("http://localhost:8080/rooms/addUser", {
         username: username,
         roomId: roomId,
       });
       fetchUsersInRoom();
     } catch (error) {
       console.error("Error during adding user to room:", error.message);
+    }
+  };
+  const handleDeleteRoom = async () => {
+    try {
+      await axios.delete(`http://localhost:8080/rooms/delete/${roomId}`);
+      navigate("/home");
+    } catch (error) {
+      console.error("Error during deleting the room:", error.message);
     }
   };
   const handleInputChangeForTaskTitle = (e) => {
@@ -105,45 +127,55 @@ const UserRoom = () => {
   return (
     <Container className="text-center">
       <Row>
-        <Col md={5}>
-          <Row className="justify-content-center">
-            <Col md={8}>
-              <Form.Group>
-                <Form.Select
-                  id="selectedUser"
-                  name="selectedUser"
-                  value={username}
-                  onChange={handleInputChangeForUsername}
+        {isThisRoomCreatedByUser && (
+          <Col md={6}>
+            <Row className="justify-content-center">
+              <Col md={3}>
+                <Button
+                  className="w-100 deleteButton"
+                  onClick={handleDeleteRoom}
                 >
-                  <option value="">Select a user</option>
-                  {usersNotInRoom.map((user) => (
-                    <option key={user.id} value={user.username}>
-                      {user.username}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-              <Button onClick={handleAddUser} className="w-100">
-                Add user
-              </Button>
-            </Col>
-          </Row>
+                  Delete room
+                </Button>
+              </Col>
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Select
+                    id="selectedUser"
+                    name="selectedUser"
+                    value={username}
+                    onChange={handleInputChangeForUsername}
+                  >
+                    <option value="">Select a user</option>
+                    {usersNotInRoom.map((user) => (
+                      <option key={user.id} value={user.username}>
+                        {user.username}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col md={3}>
+                <Button onClick={handleAddUser} className="w-100">
+                  Add user
+                </Button>
+              </Col>
+            </Row>
 
-          <Row className="justify-content-center mt-5">
-            <Col>
-              <h3>Users in room:</h3>
-              {users.length > 0 ? (
-                <UserList users={users} setUsers={setUsers} />
-              ) : (
-                <p>No users in room.</p>
-              )}
-            </Col>
-          </Row>
-        </Col>
+            <Row className="justify-content-center mt-5">
+              <Col>
+                <h3>Users in room:</h3>
+                {users.length > 0 ? (
+                  <UserList users={users} setUsers={setUsers} />
+                ) : (
+                  <p>No users in room.</p>
+                )}
+              </Col>
+            </Row>
+          </Col>
+        )}
 
-        <Col md={7}>
+        <Col>
           <Row className="justify-content-center">
             <Col md={4}>
               <Form.Group>
@@ -183,6 +215,7 @@ const UserRoom = () => {
                 </div>
               ) : (
                 <div className="mt-3">
+                  <h3>Tasks in room:</h3>
                   <TaskList tasks={tasks} />
                 </div>
               )}
