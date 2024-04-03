@@ -16,9 +16,17 @@ const Home = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("To Do");
+  const [selectedField, setSelectedField] = useState("title");
+  const [selectedSortOrder, setSelectedSortOrder] = useState("asc");
   const handleStatusChange = (e) => {
     setSelectedStatus(e.target.value);
+  };
+  const handleSortOrderChange = (e) => {
+    setSelectedSortOrder(e.target.value);
+  };
+  const handleFieldChange = (e) => {
+    setSelectedField(e.target.value);
   };
   const handleStartDateChange = (e) => {
     setStartDate(e.target.value);
@@ -131,6 +139,19 @@ const Home = () => {
     try {
       const response = await axios.get(
         `http://localhost:8080/tasks/filterByStatus/${isAuth}?status=${selectedStatus}`
+      );
+      setTasks(response);
+      setIsTasksLoading(false);
+    } catch (error) {
+      console.error("Error fetching user tasks:", error.message);
+    }
+  };
+
+  const sortByKey = async () => {
+    setIsTasksLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/tasks/sortByKey/${isAuth}?sortField=${selectedField}&sortOrder=${selectedSortOrder}`
       );
       setTasks(response);
       setIsTasksLoading(false);
@@ -256,6 +277,40 @@ const Home = () => {
                     }}
                   >
                     Filter by status
+                  </Button>
+                </Col>
+              </Row>
+              <Row className="mt-3">
+                <Col md={4}>
+                  <select
+                    id="field"
+                    value={selectedField}
+                    onChange={handleFieldChange}
+                    className="form-select w-100"
+                  >
+                    <option value="title">По назві</option>
+                    <option value="status">По статусу</option>
+                  </select>
+                </Col>
+                <Col md={4}>
+                  <select
+                    id="sortOrder"
+                    value={selectedSortOrder}
+                    onChange={handleSortOrderChange}
+                    className="form-select w-100"
+                  >
+                    <option value="asc">По зростанню</option>
+                    <option value="desc">По спаданню</option>
+                  </select>
+                </Col>
+                <Col md={4}>
+                  <Button
+                    className="w-100"
+                    onClick={() => {
+                      sortByKey();
+                    }}
+                  >
+                    Sort by key
                   </Button>
                 </Col>
               </Row>
